@@ -32,14 +32,19 @@
     X(RIGHT_PAREN)      \
     X(LEFT_BRACE)       \
     X(RIGHT_BRACE)      \
+    X(LEFT_BRACKET)     \
+    X(RIGHT_BRACKET)    \
     X(COMMA)            \
     X(DOT)              \
     X(SEMICOLON)        \
                         \
     X(MINUS)            \
+    X(MINUS_MINUS)      \
     X(PLUS)             \
+    X(PLUS_PLUS)        \
     X(SLASH)            \
     X(STAR)             \
+    X(REM)              \
                         \
     X(AND)              \
     X(OR)               \
@@ -56,14 +61,21 @@
     X(STRING)           \
     X(IDENTIFIER)       \
                         \
+    X(PROGRAM)          \
+    X(CLASS)            \
+    X(PRINT)            \
+    X(READ)             \
+    X(RETURN)           \
+    X(BREAK)            \
+    X(VOID)             \
+    X(FINAL)            \
+    X(NEW)              \
     X(IF)               \
     X(ELSE)             \
     X(FOR)              \
     X(WHILE)            \
-    X(TRUE)             \
-    X(FALSE)            \
-    X(NUMBER_KW)        \
-    X(STRING_KW)        \
+    X(INT)              \
+    X(CHAR)             \
     
 
 
@@ -92,12 +104,13 @@ inline const char* tokenTypeToStr(TokenType token_type)
 }
 
 
-typedef struct Token
+typedef struct Token 
 {
-    const char* strValue;
-    double numValue;
-    TokenType tokenType;
+    const char* idenValue;
+    int numValue;
     int line;
+    TokenType tokenType;
+    char charValue;
 } Token;
 
 

@@ -1,0 +1,70 @@
+program MicroJavaDemo
+    final int SIZE = 5;
+
+    class Box
+    {
+        int value;
+        char tag;
+    }
+
+    int[] data;
+    Box box;
+    
+{
+    int factorial(int n)
+    {
+        if (n <= 1) return 1;
+        return n * factorial(n - 1);
+    }
+
+    int sum(int[] a, int n)
+    {
+        int i;
+        int s;
+        i = 0;
+        s = 0;
+
+        while (i < n)
+        {
+            s = s + a[i];
+            i++;
+        }
+        
+        return s;
+    }
+
+    void main()
+    {
+        int i;
+
+        data = new int[SIZE];
+
+        i = 0;
+        while (i < SIZE)
+        {
+            data[i] = i + 1;
+            i++;
+        }
+
+        box = new Box;
+        box.value = factorial(SIZE);
+        box.tag = 'F';
+
+        print(box.tag);
+        print('=');
+        print(box.value);
+        print('\n');
+
+        print('S');
+        print('=');
+        print(sum(data, SIZE));
+        print('\n');
+
+        if (box.value > sum(data, SIZE))
+        print(1);
+        else
+        print(0);
+
+        print('\n');
+    }
+}

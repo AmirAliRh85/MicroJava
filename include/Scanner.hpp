@@ -43,14 +43,15 @@ class Scanner
         bool isAlphaNumeric(char c);
         bool isWhitespace(char c);
 
-        void number();
-        void string();
+        void _number();
+        void _string();
+        void _char();
 
         void identifier();
 
         void report();
 
-        void addToken(TokenType token_type , const char* str_val = NULL , double val = 0.0);
+        void addToken(TokenType token_type , char c = '\0' , int val = 0 , const char* iden = NULL);
 
     public :
         Scanner(const char* file_path , const unsigned int buffer_size);

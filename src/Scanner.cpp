@@ -2,12 +2,21 @@
 
 
 const std::unordered_map<std::string , TokenType> KEYWORDS = {
-    {"if" , IF},
+    {"program" , PROGRAM},
+    {"class" , CLASS},
+    {"print" , PRINT},
+    {"read" , READ},
+    {"return" , RETURN},
+    {"break" , BREAK},
+    {"void" , VOID},
+    {"final" , FINAL},
+    {"new" , NEW},
+    {"class" , IF},
     {"else" , ELSE},
     {"for" , FOR},
     {"while" , WHILE},
-    {"true" , TRUE},
-    {"false" , FALSE},
+    {"int" , INT},
+    {"char" , CHAR},
 };
 
 
@@ -33,16 +42,16 @@ Scanner::Scanner(const char* file_path)
 
 Scanner::~Scanner()
 {
-    int len = tokens.size();
-    
-    for (int i = 0 ; i < len ; i++)
-    {
-        if (tokens[i].strValue != NULL)
-            free((void*)(tokens[i].strValue));
-    }
-
     if (source != NULL)
         free(source);
+
+    int len = tokens.size();
+
+    for (int i = 0 ; i < len ; i++)
+    {
+        if (tokens[i].idenValue != NULL)
+            free((void*)tokens[i].idenValue);
+    }
 
     tokens.clear();
 }
@@ -101,12 +110,36 @@ void Scanner::scanToken()
         case ')' : addToken(RIGHT_PAREN); break;
         case '{' : addToken(LEFT_BRACE); break;
         case '}' : addToken(RIGHT_BRACE); break;
+        case '[' : addToken(LEFT_BRACKET); break;
+        case ']' : addToken(RIGHT_BRACKET); break;
         case ',' : addToken(COMMA); break;
         case '.' : addToken(DOT); break;
-        case '-' : addToken(MINUS); break;
-        case '+' : addToken(PLUS); break;
         case ';' : addToken(SEMICOLON); break;
         case '*' : addToken(STAR); break;
+        case '%' : addToken(REM); break;
+        case '-' : 
+            if (peek() == '-')
+            {
+                addToken(MINUS_MINUS);
+                advance();
+            }
+            else
+            {
+                addToken(MINUS);
+            }
+            break;
+
+        case '+' : 
+            if (peek() == '+')
+            {
+                addToken(PLUS_PLUS);
+                advance();
+            }
+            else
+            {
+                addToken(PLUS);
+            }
+            break;
 
         case '!' :
             if (peek() == '=')
@@ -156,6 +189,30 @@ void Scanner::scanToken()
             }
             break;
 
+        case '|' :
+            if (peek() == '|')
+            {
+                addToken(OR);
+                advance();
+            }
+            else
+            {
+                break;
+                // this must raise error
+            }
+
+        case '&' :
+            if (peek() == '&')
+            {
+                addToken(AND);
+                advance();
+            }
+            else
+            {
+                break;
+                // this must raise error
+            }
+
         case ' ' : break;
         case '\t' : break;
         case '\r' : break;
@@ -196,11 +253,11 @@ void Scanner::scanToken()
         default :
             if (isDigit(c))
             {
-                number();
+                _number();
             }
-            else if (c == '"')
+            else if (c == '\'')
             {
-                string();
+                _char();
             }
             else if (isAlpha(c))
             {
@@ -249,7 +306,7 @@ bool Scanner::isWhitespace(char c)
     return c == '\n' || c == ' ' || c == '\t' || c == '\r';
 }
 
-void Scanner::number()
+void Scanner::_number()
 {
     bool has_left_side = false;
     bool is_float = false;
@@ -267,44 +324,42 @@ void Scanner::number()
         has_left_side = true;
     }
 
-    if (peek() == '.')
-    {
-        num[idx++] = '.';
-        advance();
-        is_float = true;
-
-        while (isDigit(peek()))
-        {
-            num[idx++] = peek();
-            advance();
-            has_right_side = true;
-        }
-    }
-
     num[idx] = '\0';
 
-    addToken(NUMBER , NULL , std::atof(num));   
+    addToken(NUMBER , '\0' , std::atof(num));   
 }
 
-void Scanner::string()
+void Scanner::_char()
 {
-    char str[64];
-    int idx = 0;
+    char c;
 
-    while (peek() != '"')
-    {
-        str[idx++] = peek();
-        advance();
-    }
+    c = peek();
 
-    str[idx] = '\0';
+    advance();
+    
+    if (peek() != '\'')
+        printf("The char is not valid\n");
+
     advance();
 
-    char* str_alloc = (char*)malloc(idx + 1);
-    memcpy(str_alloc , (char*)str , idx + 1);
-
-    addToken(STRING , str_alloc);
+    addToken(STRING , c);
 }
+
+// void Scanner::_string()
+// {
+//     char c;
+
+//     while (peek() != '\'')
+//     {
+//         str[idx++] = peek();
+//         advance();
+//     }
+
+//     str[idx] = '\0';
+//     advance();
+
+//     addToken(STRING , c);
+// }
 
 void Scanner::identifier()
 {
@@ -326,19 +381,19 @@ void Scanner::identifier()
 
     if (it != KEYWORDS.end())
     {
-        addToken(it->second , NULL);
+        addToken(it->second);
     }
     else
     {
         char* iden_alloc = (char*)malloc(idx + 1);
         memcpy(iden_alloc , (char*)iden , idx + 1);
 
-        addToken(IDENTIFIER , iden_alloc);
+        addToken(IDENTIFIER , '\0' , 0 , iden_alloc);
     }
 }
 
 
-void Scanner::addToken(TokenType token_type , const char* str_val , double val)
+void Scanner::addToken(TokenType token_type , char c , int val , const char* iden)
 {
-    tokens.push_back((Token){str_val , val , token_type , line});
+    tokens.push_back((Token){iden , val , line , token_type , c});
 }

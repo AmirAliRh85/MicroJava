@@ -8,7 +8,7 @@ void interpretFile(const char* file_path)
 
     for (Token t : *tokens)
     {
-        printf("%i | %.1f , %s , %s\n" , t.line , t.numValue , t.strValue , tokenTypeToStr(t.tokenType));
+        printf("%i | %3d , '%c' , %s , %s\n" , t.line , t.numValue , t.charValue , t.idenValue , tokenTypeToStr(t.tokenType));
     }
 }
 

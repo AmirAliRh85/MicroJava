@@ -1,8 +1,7 @@
 TARGET = main
-FILE = ./examples/hello_world.mj
+FILE = ./examples/fib.mj
 
 SRCS = ${wildcard ./src/*.cpp}
-
 
 run : compile
 	./${TARGET}.exe ${FILE}
