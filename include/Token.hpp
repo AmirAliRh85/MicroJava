@@ -63,7 +63,6 @@
                         \
     X(PROGRAM)          \
     X(CLASS)            \
-    X(PRINT)            \
     X(READ)             \
     X(RETURN)           \
     X(BREAK)            \
@@ -76,7 +75,11 @@
     X(WHILE)            \
     X(INT)              \
     X(CHAR)             \
-    
+                        \
+    X(PRINT)            \
+    X(LEN)              \
+    X(CHR)              \
+    X(ORD)              \
 
 
 typedef enum

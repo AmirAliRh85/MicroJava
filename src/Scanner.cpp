@@ -4,7 +4,6 @@
 const std::unordered_map<std::string , TokenType> KEYWORDS = {
     {"program" , PROGRAM},
     {"class" , CLASS},
-    {"print" , PRINT},
     {"read" , READ},
     {"return" , RETURN},
     {"break" , BREAK},
@@ -17,6 +16,11 @@ const std::unordered_map<std::string , TokenType> KEYWORDS = {
     {"while" , WHILE},
     {"int" , INT},
     {"char" , CHAR},
+
+    {"print" , PRINT},
+    {"len" , LEN},
+    {"ord" , ORD},
+    {"chr" , CHR},
 };
 
 
